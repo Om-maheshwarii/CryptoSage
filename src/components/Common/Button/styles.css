@@ -1,0 +1,26 @@
+.btn {
+  background-color: rgb(98, 90, 152);
+  padding: 0.65rem 0.75rem;
+  border-radius: 2.5rem;
+  text-align: center;
+}
+.btn:hover {
+  box-shadow: inset 5px 5px 8px rgb(124, 115, 184);
+  transform: all 0.3s;
+  color: var(--white);
+  cursor: pointer;
+}
+.outline-btn {
+  background-color: var(--darkpurple);
+  padding: 0.65rem 0.75rem;
+  border: 2px solid var(--purple);
+  border-radius: 2.5rem;
+}
+.outline-btn:hover {
+  background-color: rgb(98, 90, 152);
+  box-shadow: inset 5px 5px 8px rgb(124, 115, 184);
+  transform: all 0.4s;
+  /* border: none; */
+  color: var(--white);
+  cursor: pointer;
+}

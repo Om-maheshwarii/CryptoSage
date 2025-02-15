@@ -1,0 +1,108 @@
+.grid-container {
+  width: 325px;
+  height: 325px;
+  background-color: #312449;
+  border: 2px solid #312449;
+  border-radius: 0.75rem;
+  cursor: pointer;
+}
+.info-flex {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 1.5rem;
+}
+.coin-logo {
+  height: 3.5rem;
+  width: 3.5rem;
+}
+.coin-symbol {
+  color: var(--white);
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 1.25rem;
+  margin: 0.25rem 0rem;
+}
+.coin-name {
+  color: var(--lightwhite);
+  text-transform: capitalize;
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin: 0;
+}
+.chip-flex {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.5rem;
+}
+.price-chip-green {
+  border: 2px solid var(--green);
+  border-radius: 2.5rem;
+  padding: 0.25rem 0.75rem;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--green);
+}
+.price-chip-green:hover {
+  background-color: var(--green);
+  color: var(--black);
+}
+.price-chip-red {
+  border: 2px solid var(--red);
+  border-radius: 2.5rem;
+  padding: 0.25rem 0.75rem;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--red);
+}
+.price-chip-red:hover {
+  background-color: var(--red);
+  color: var(--black);
+}
+.dsp-yes {
+  display: inline;
+}
+.icon-green {
+  border: 2px solid var(--green);
+  border-radius: 50%;
+  text-align: center;
+  color: var(--green);
+  padding: 0.4rem;
+}
+.icon-green:hover {
+  background-color: var(--green);
+  color: var(--black);
+}
+.dsp-no {
+  display: none;
+}
+.icon-red {
+  border: 2px solid var(--red);
+  border-radius: 50%;
+  text-align: center;
+  color: var(--red);
+  padding: 0.4rem;
+}
+.icon-red:hover {
+  background-color: var(--red);
+  color: var(--black);
+}
+.price-red {
+  color: var(--red);
+  margin: 1rem 1.5rem;
+}
+.price-green {
+  color: var(--green);
+  margin: 1rem 1.5rem;
+}
+.extra-info {
+  color: var(--lightwhite);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 2rem 1.5rem;
+}
