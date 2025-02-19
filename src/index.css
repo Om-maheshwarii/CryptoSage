@@ -61,3 +61,15 @@ img {
   -o-user-select: none;
   user-select: none;
 }
+
+td {
+  text-align: left;
+  width: 18%;
+}
+.purple-wrapper {
+  background-color: #413060;
+  margin: 1.5rem;
+
+  padding: 0.25rem 2rem;
+  border-radius: 2rem;
+}

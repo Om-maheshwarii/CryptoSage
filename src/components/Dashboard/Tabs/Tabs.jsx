@@ -50,12 +50,15 @@ export default function TabsComponent({ coins }) {
                         })}
                     </div>
                 </TabPanel>
-                <TabPanel value="list" style={{ padding: "0" }}>
-                    <div className='list-flex'>
-                        {coins.map((coin, i) => {
-                            return <List coin={coin} key={i} delay={(i % 8) * 0.2} />
-                        })}
-                    </div>
+                <TabPanel value="list" style={{ padding: "0", margin: "0" }}>
+                    <table className='list-table'>
+                        <tbody>
+                            {coins.map((coin, i) => {
+                                return <List coin={coin} key={i} delay={(i % 8) * 0.2} />
+                            })}
+                        </tbody>
+
+                    </table>
                 </TabPanel>
             </TabContext>
         </ThemeProvider>

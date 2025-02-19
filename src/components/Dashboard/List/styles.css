@@ -1,165 +1,121 @@
-.list-container {
+.List-row {
   display: flex;
-  justify-content: space-between;
+  flex-direction: row;
   align-items: center;
-  background-color: var(--darkpurple);
-  width: 85vw;
-  padding: 0.5rem 1rem;
-  margin: 0.2rem 4rem;
-  border-radius: 2rem;
-  cursor: pointer;
-}
-.list-container:hover {
-  background-color: #3e2c5e;
-  transition: all 0.3;
-}
-.coin-icon {
-  height: 2.5rem;
-  width: 2.5rem;
-}
-.name-col-flex {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 7rem;
-  margin: 0rem 1rem;
-}
-.coin-info {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-}
-.extra-info-coin {
-  display: flex;
+  width: 100%;
+  padding: 0rem 1rem;
+  justify-content: space-around;
   gap: 4rem;
+  border-radius: 1rem;
+  margin: 1rem 0;
 }
-.list-chip-flex {
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
+.List-row:hover {
+  cursor: pointer;
+  background-color: #413060;
+}
+.chip-flex {
+  text-align: left;
+  margin: 0;
+}
+.info-flex {
   gap: 3rem;
-  margin: 0.5rem 1.5rem;
 }
-.coin-name {
-  text-align: center;
+.td-image {
+  width: 3rem !important;
+}
+.td-right-align {
+  text-align: right;
+}
+.mkt-price {
+  font-size: 1.5rem;
   font-weight: 500;
-  font-size: 1.25rem;
-  margin: 0.25rem 0rem;
-  text-transform: capitalize;
 }
-.coin-symbol {
-  text-transform: uppercase;
-}
-.coin-volume {
-  font-weight: 500;
-  font-size: 1rem;
-}
-.coin-marketCap {
-  font-weight: 500;
-  font-size: 1rem;
-}
-.price-chip-green {
-  border: 2px solid var(--green);
-  border-radius: 2.5rem;
-  padding: 0.25rem 0.75rem;
-  text-align: center;
-  font-weight: 600;
-  font-size: 1rem;
-  color: var(--green);
-}
-.price-chip-green:hover {
-  background-color: var(--green);
-  color: var(--black);
-}
-.price-chip-red {
-  border: 2px solid var(--red);
-  border-radius: 2.5rem;
-  padding: 0.25rem 0.75rem;
-  text-align: center;
-  font-weight: 600;
-  font-size: 1rem;
-  color: var(--red);
-}
-.price-chip-red:hover {
-  background-color: var(--red);
-  color: var(--black);
-}
-.dsp-yes {
-  display: inline;
-}
-.icon-green {
-  border: 2px solid var(--green);
-  border-radius: 50%;
-  text-align: center;
-  color: var(--green);
-  padding: 0.4rem;
-}
-.icon-green:hover {
-  background-color: var(--green);
-  color: var(--black);
-}
-.dsp-no {
+.mobile {
   display: none;
 }
-.icon-red {
-  border: 2px solid var(--red);
-  border-radius: 50%;
-  text-align: center;
-  color: var(--red);
-  padding: 0.4rem;
-}
-.icon-red:hover {
-  background-color: var(--red);
-  color: var(--black);
+.info-flex {
+  margin: 0;
 }
 .price-red {
-  color: var(--red);
-  margin: 1rem 1.5rem;
+  margin: 0;
 }
-.price-green {
-  color: var(--green);
-  margin: 1rem 1.5rem;
+.margin-mid {
+  margin: 1.5rem;
 }
 
-@media screen and (max-width: 1000px) {
-  .coin-marketCap {
+@media screen and (max-width: 1250px) {
+  .List-row {
+    gap: 2rem;
+    width: 95%;
+  }
+}
+@media screen and (max-width: 1050px) {
+  .List-row {
+    gap: 1rem;
+    width: 95%;
+  }
+}
+@media screen and (max-width: 900px) {
+  .price-up {
+    display: none;
+  }
+  .price-down {
     display: none;
   }
 }
+
 @media screen and (max-width: 850px) {
-  .coin-volume {
+  .ttl-vol {
     display: none;
   }
-  .icon-green {
-    display: none;
-  }
-  .icon-red {
-    display: none;
-  }
-  .list-container {
-    margin: 0.2rem;
-    width: 88vw;
+  .List-row {
+    gap: 2rem;
   }
 }
-@media screen and (max-width: 750px) {
-  .list-container {
-    margin: 0.2rem 2.5rem;
-    justify-content: normal;
+
+@media screen and (max-width: 800px) {
+  .mkt-price {
+    font-size: 1rem;
   }
-  .name-col-flex {
-    gap: 3rem;
+  .td-small {
+    font-size: small;
+    font-weight: 500;
+  }
+  .mkt-cap {
+    display: none;
+  }
+  .mobile {
+    display: inline;
+  }
+}
+@media screen and (max-width: 700px) {
+  .td-small-icon {
+    height: 2rem;
+    width: 2rem;
+  }
+  .td-smaller {
+    font-size: small;
+  }
+
+  .List-row {
+    gap: 1rem;
+  }
+  .td-left-align {
+    text-align: left;
   }
 }
 @media screen and (max-width: 550px) {
-  .list-container {
-    margin: 0.2rem 0rem;
-    justify-content: normal;
+  .mkt-price {
+    font-size: smaller;
+    font-weight: 700;
   }
-  .name-col-flex {
-    gap: 1rem;
+  .List-row {
+    gap: 0.75rem;
+    padding: 0;
   }
-  .list-chip-flex {
-    gap: 1rem;
-    flex-wrap: wrap;
+}
+@media screen and (max-width: 400px) {
+  .mobile {
+    display: none;
   }
 }

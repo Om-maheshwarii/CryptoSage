@@ -4,46 +4,44 @@ import TrendingUpRoundedIcon from '@mui/icons-material/TrendingUpRounded';
 import TrendingDownRoundedIcon from '@mui/icons-material/TrendingDownRounded';
 import { motion } from "framer-motion";
 import { Tooltip } from "@mui/material";
+import { convertNumber } from '../../../functions/convertNumber';
 
 
 const List = ({ coin, delay }) => {
     return (
-        <motion.div className='list-container'
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: delay }}
-        >
-            <div className="name-col-flex">
-                <Tooltip title="coin image">
-                    <img src={coin.image} className='coin-icon' />
-                </Tooltip>
-                <Tooltip title="coin info">
-                    <div className="coin-info">
-                        <p className='coin-symbol'>{coin.symbol}</p>
-                        <p className='coin-name'>{coin.name}</p>
+        <tr className='List-row'>
+            <Tooltip title='coin-logo'>
+                <td className='td-image '>  <img src={coin.image} className='coin-logo td-small-icon' /></td>
+            </Tooltip>
+            <Tooltip title='Coin Symbol & Name'>
+                <td className="info-flex">
+                    <div className='name-col'>
+                        <p className='coin-symbol td-smaller'>{coin.symbol}</p>
+                        <p className='coin-name td-smaller'>{coin.name}</p>
                     </div>
-                </Tooltip>
-            </div>
-            <Tooltip title="price change info in last 24h">
-                <div className='list-chip-flex'>
-
-                    <div className={coin.price_change_percentage_24h.toFixed(3) > 0 ? "price-chip-green" : "price-chip-red"}>{coin.price_change_percentage_24h.toFixed(3)}%</div>
-                    <div className={coin.price_change_percentage_24h.toFixed(3) > 0 ? "dsp-yes icon-green" : "dsp-no"}><TrendingUpRoundedIcon /></div>
-                    <div className={coin.price_change_percentage_24h.toFixed(3) > 0 ? "dsp-no " : "dsp-yes icon-red"}><TrendingDownRoundedIcon /></div>
-                    <div className="current-price">${coin.current_price.toLocaleString()}</div>
-
-                </div>
+                </td>
+            </Tooltip>
+            <Tooltip title='24h Price Change'>
+                <td className="chip-flex">
+                    <div className={coin.price_change_percentage_24h.toFixed(3) > 0 ? "price-chip-green td-smaller" : "price-chip-red td-smaller"}>{coin.price_change_percentage_24h.toFixed(3)}%</div>
+                    <div className={coin.price_change_percentage_24h.toFixed(3) > 0 ? "dsp-yes icon-green price-up" : "dsp-no"}><TrendingUpRoundedIcon /></div>
+                    <div className={coin.price_change_percentage_24h.toFixed(3) > 0 ? "dsp-no  " : "dsp-yes icon-red price-down"}><TrendingDownRoundedIcon /></div>
+                </td>
+            </Tooltip>
+            <Tooltip title='Current Market Price'>
+                <td className={coin.price_change_percentage_24h.toFixed(3) > 0 ? "price-green td-right-align mkt-price " : "price-red td-right-align mkt-price "}>${coin.current_price.toLocaleString()}</td>
+            </Tooltip>
+            <Tooltip title='Market Cap'>
+                <td className='td-right-align mkt-cap td-small'>${coin.market_cap.toLocaleString()}</td>
+                <td className=' td-small mobile'>${convertNumber(coin.market_cap)}</td>
+            </Tooltip>
+            <Tooltip title='Total Volume'>
+                <td className='td-right-align td-small ttl-vol'>${coin.total_volume.toLocaleString()}</td>
             </Tooltip>
 
-            <div className="extra-info-coin">
-                <Tooltip title="Total Volume">
-                    <p className='coin-volume'>${coin.total_volume.toLocaleString()}</p>
-                </Tooltip>
-                <Tooltip title="Total Market Cap">
-                    <p className='coin-marketCap'>${coin.market_cap.toLocaleString()}</p>
-                </Tooltip>
-            </div>
-        </motion.div>
+
+        </tr>
+
     )
 }
 

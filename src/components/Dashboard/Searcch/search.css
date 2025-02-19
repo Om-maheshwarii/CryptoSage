@@ -1,0 +1,29 @@
+.search-flex {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1rem 3rem;
+  color: var(--gray);
+  background-color: #312449;
+  width: 75%;
+  margin-right: auto;
+  margin-left: auto;
+  border-radius: 2rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.search-icon {
+  color: var(--white);
+}
+.search-flex input {
+  width: 100%;
+  background-color: #312449;
+  font-family: "Montserrat", sans-serif;
+  border: none;
+  color: var(--white);
+  font-size: 1.2rem;
+}
+.search-flex input:focus {
+  outline: none;
+}
