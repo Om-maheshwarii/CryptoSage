@@ -1,4 +1,4 @@
-export const coinObject = (setState, data) => {
+const coinObject = (setState, data) => {
   setState({
     id: data.id,
     name: data.name,
@@ -11,3 +11,5 @@ export const coinObject = (setState, data) => {
     market_cap: data.market_data.market_cap.usd,
   });
 };
+
+export default coinObject;

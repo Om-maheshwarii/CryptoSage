@@ -106,3 +106,26 @@
   font-weight: 600;
   margin: 2rem 1.5rem;
 }
+\/* Add these styles to your style.css file */
+
+.grid-wrapper {
+  position: relative;
+}
+
+.wishlist-button-container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+}
+
+.coin-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Make sure the grid container has position relative for proper positioning */
+.grid-container {
+  position: relative;
+}

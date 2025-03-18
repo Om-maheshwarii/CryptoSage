@@ -73,3 +73,11 @@ td {
   padding: 0.25rem 2rem;
   border-radius: 2rem;
 }
+
+.coins-day-flex {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 1rem;
+  gap: 4rem;
+}

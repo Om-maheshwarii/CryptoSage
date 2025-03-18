@@ -30,7 +30,7 @@ const CoinInfo = ({ heading, description }) => {
                   style={{ color: "var(--lightpurple)", cursor: "pointer" }}
                   onClick={handleReadLessClick}
                 >
-                  Read Less
+                  Read Less...
                 </span>
               </>
             ) : (

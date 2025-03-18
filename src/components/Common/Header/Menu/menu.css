@@ -1,0 +1,13 @@
+#basic-button {
+  background-color: var(--darkpurple);
+  padding: 0.5rem 2rem;
+  border: 2px solid var(--purple);
+  border-radius: 2.5rem;
+  color: var(--lightwhite);
+}
+#basic-button:hover {
+  background-color: var(--purple);
+}
+#basic-button:focus {
+  background-color: var(--purple);
+}
