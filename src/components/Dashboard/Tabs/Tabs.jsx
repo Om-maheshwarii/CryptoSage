@@ -11,6 +11,18 @@ import Grid from "../Grid/Grid";
 import "./style.css";
 import List from "../List/List";
 
+/**
+ * TabsComponent - Dashboard Tabs Component
+ *
+ * Provides tabs for different views of cryptocurrency data:
+ * - Grid view: Displays cryptocurrencies in a grid layout
+ * - List view: Displays cryptocurrencies in a list layout
+ *
+ * @param {Object} props - Component props
+ * @param {Array} props.coins - Array of cryptocurrency data
+ * @param {string} props.symbol - Currency symbol for displaying prices
+ * @returns {JSX.Element} The rendered tabs component
+ */
 export default function TabsComponent({ coins, symbol }) {
   const [value, setValue] = useState("grid");
 

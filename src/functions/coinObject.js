@@ -1,3 +1,18 @@
+/**
+ * coinObject.js - Coin Data Formatter
+ *
+ * This file contains a utility function for formatting coin data from the API.
+ * It extracts relevant properties from the API response and formats them for use in the application.
+ */
+
+/**
+ * Formats coin data from the API response
+ *
+ * Extracts and formats relevant properties from the coin data returned by the API.
+ *
+ * @param {Function} setState - The state setter function to update the coin data
+ * @param {Object} data - The raw coin data from the API
+ */
 const coinObject = (setState, data) => {
   setState({
     id: data.id,

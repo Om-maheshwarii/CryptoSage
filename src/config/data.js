@@ -1,3 +1,16 @@
+/**
+ * data.js - Application Data Constants
+ *
+ * This file contains constant data used throughout the application.
+ * It defines options for chart time periods and other static data.
+ */
+
+/**
+ * Chart time period options
+ *
+ * Defines the available time periods for displaying cryptocurrency charts.
+ * Each option has a label for display and a value representing the number of days.
+ */
 export const chartDays = [
   {
     label: "24 Hours",

@@ -5,6 +5,7 @@ import AnchorTemporaryDrawer from "./drawer";
 import LoginRoundedIcon from "@mui/icons-material/LoginRounded";
 import Button from "../Button/Button";
 import BasicSelect from "./Menu/Menu";
+import AIAssistant from "./AIAssistant/AIAssistant";
 
 const Header = () => {
   return (
@@ -27,6 +28,7 @@ const Header = () => {
         <BasicSelect />
       </div>
       <div className="buttons">
+        <AIAssistant />
         <Link to="/dashboard">
           <Button text={"Dashboard"} outlined={true} />
         </Link>

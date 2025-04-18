@@ -15,6 +15,11 @@
   overflow-x: auto !important;
 }
 
+/* Adjust tab width for three tabs */
+.MuiTab-root {
+  width: 33.33% !important;
+}
+
 @media screen and (max-width: 1000px) {
   .list-table {
     padding-top: 2rem;
