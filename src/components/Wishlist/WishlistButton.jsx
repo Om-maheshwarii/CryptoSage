@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addToWishlist, removeFromWishlist } from "../../store"; // Adjust path as needed
+import { addToWishlist, removeFromWishlist } from "../../Store"; // Adjust path as needed
 import IconButton from "@mui/material/IconButton";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
