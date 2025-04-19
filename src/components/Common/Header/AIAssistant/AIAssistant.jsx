@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import {
   Box,
   IconButton,
@@ -25,7 +25,8 @@ import {
   getAIResponse,
   generateFallbackResponse,
   analyzeChartData,
-} from "./aiService";
+} from "../../../../services/aiService";
+import { cryptoState } from "../../../../CurrencyContext";
 import "./style.css";
 
 // Configure marked options
@@ -37,6 +38,7 @@ marked.setOptions({
 });
 
 const AIAssistant = () => {
+  const { currency } = cryptoState();
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([
@@ -49,6 +51,11 @@ const AIAssistant = () => {
   const [error, setError] = useState(null);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
+
+  // Add debug logging for currency data
+  useEffect(() => {
+    console.log("Currency data:", currency);
+  }, [currency]);
 
   // Focus input field when chat opens
   useEffect(() => {
@@ -111,51 +118,103 @@ const AIAssistant = () => {
         (userMessage.toLowerCase().includes("chart") ||
           userMessage.toLowerCase().includes("price"))
       ) {
-        // Extract coin name from the message (this is a simple implementation)
+        // Extract coin name from the message
         const coinMatch = userMessage.match(
           /(?:analyze|chart|price)\s+(?:for|of|the)?\s+([a-zA-Z]+)/i
         );
-        const coinName = coinMatch ? coinMatch[1] : "Bitcoin"; // Default to Bitcoin if no coin specified
+        const coinName = coinMatch ? coinMatch[1] : "Bitcoin";
 
-        // Get chart data from your application state or API
-        // This is a placeholder - you'll need to implement this based on your app's structure
-        const chartData = {
-          currentPrice: 50000, // Example value
-          priceChange24h: 1000,
-          priceChangePercentage24h: 2.5,
-          marketCap: 1000000000000,
-          totalVolume: 50000000000,
-          high24h: 51000,
-          low24h: 49000,
-          prices: [
-            [Date.now() - 3600000, 49000],
-            [Date.now() - 1800000, 49500],
-            [Date.now(), 50000],
-          ],
-          volumes: [
-            [Date.now() - 3600000, 1000000000],
-            [Date.now() - 1800000, 1200000000],
-            [Date.now(), 1500000000],
-          ],
+        console.log("Searching for coin:", coinName);
+
+        // Get the actual chart data from the currency context
+        const chartData = Array.isArray(currency)
+          ? currency.find((coin) => {
+              const matchesName =
+                coin.name.toLowerCase() === coinName.toLowerCase();
+              const matchesSymbol =
+                coin.symbol.toLowerCase() === coinName.toLowerCase();
+              console.log(`Checking coin: ${coin.name} (${coin.symbol})`);
+              return matchesName || matchesSymbol;
+            })
+          : null;
+
+        console.log("Found chart data:", chartData);
+
+        if (!chartData) {
+          // Instead of throwing an error, provide a helpful message
+          const errorMessage = `I couldn't find specific data for ${coinName}. Let me provide some general information instead.`;
+          setMessages((prev) => [
+            ...prev,
+            { sender: "bot", text: errorMessage },
+          ]);
+          setIsTyping(false);
+
+          // Get a general response about the coin
+          const generalResponse = await getAIResponse(
+            `Tell me about ${coinName} cryptocurrency`,
+            messages
+          );
+
+          setMessages((prev) => [
+            ...prev,
+            { sender: "bot", text: generalResponse },
+          ]);
+          return;
+        }
+
+        // Format the chart data
+        const formattedChartData = {
+          currentPrice: chartData.current_price,
+          priceChange24h: chartData.price_change_24h,
+          priceChangePercentage24h: chartData.price_change_percentage_24h,
+          marketCap: chartData.market_cap,
+          totalVolume: chartData.total_volume,
+          high24h: chartData.high_24h,
+          low24h: chartData.low_24h,
+          prices:
+            chartData.sparkline_in_7d?.price?.map((price, index) => [
+              Date.now() -
+                (chartData.sparkline_in_7d.price.length - index) * 3600000,
+              price,
+            ]) || [],
+          volumes: chartData.total_volume
+            ? [[Date.now(), chartData.total_volume]]
+            : [],
           indicators: {
-            RSI: 65,
-            MACD: "Bullish",
-            "Moving Average (50)": 49000,
-            "Moving Average (200)": 48000,
+            "Price Change (24h)": `${
+              chartData.price_change_percentage_24h?.toFixed(2) || "N/A"
+            }%`,
+            "Market Cap Rank": chartData.market_cap_rank || "N/A",
+            "Market Cap": chartData.market_cap?.toLocaleString() || "N/A",
+            "Circulating Supply":
+              chartData.circulating_supply?.toLocaleString() || "N/A",
+            "Total Supply": chartData.total_supply?.toLocaleString() || "N/A",
           },
         };
 
-        // Get AI analysis of the chart
-        const analysis = await analyzeChartData(chartData, coinName, "1D");
-        setMessages((prev) => [...prev, { sender: "bot", text: analysis }]);
+        console.log("Formatted chart data:", formattedChartData);
+
+        try {
+          // Get AI analysis of the chart
+          const analysis = await analyzeChartData(
+            formattedChartData,
+            coinName,
+            "7D"
+          );
+          console.log("AI Analysis response:", analysis);
+          setMessages((prev) => [...prev, { sender: "bot", text: analysis }]);
+        } catch (analysisError) {
+          console.error("Error in chart analysis:", analysisError);
+          throw analysisError;
+        }
       } else {
         // Regular chat response
         const response = await getAIResponse(userMessage, messages);
         setMessages((prev) => [...prev, { sender: "bot", text: response }]);
       }
     } catch (error) {
-      console.error("Error getting AI response:", error);
-      setError("Sorry, I encountered an error. Please try again.");
+      console.error("Error in handleSendMessage:", error);
+      setError(`Sorry, I encountered an error: ${error.message}`);
       const fallbackResponse = generateFallbackResponse(userMessage);
       setMessages((prev) => [
         ...prev,
@@ -184,7 +243,7 @@ const AIAssistant = () => {
         maxWidth="md"
         fullWidth
         PaperProps={{
-          className: "ai-assistant-dialog",
+          className: "MuiDialog-paper",
         }}
       >
         <DialogTitle>
@@ -193,7 +252,9 @@ const AIAssistant = () => {
             justifyContent="space-between"
             alignItems="center"
           >
-            <Typography variant="h6">AI Assistant</Typography>
+            <Typography variant="h6" sx={{ color: "white" }}>
+              AI Assistant
+            </Typography>
             <Box>
               <IconButton onClick={clearChat} size="small">
                 <DeleteIcon />
@@ -206,15 +267,7 @@ const AIAssistant = () => {
         </DialogTitle>
 
         <DialogContent>
-          <Paper
-            elevation={0}
-            sx={{
-              height: "60vh",
-              overflowY: "auto",
-              p: 2,
-              backgroundColor: "transparent",
-            }}
-          >
+          <Paper elevation={0} className="messages-container">
             {messages.map((message, index) => (
               <Box
                 key={index}
@@ -231,35 +284,25 @@ const AIAssistant = () => {
                     flexDirection:
                       message.sender === "user" ? "row-reverse" : "row",
                     alignItems: "flex-start",
+                    gap: "8px",
                     maxWidth: "80%",
                   }}
                 >
                   <Avatar
                     sx={{
                       bgcolor:
-                        message.sender === "user"
-                          ? "primary.main"
-                          : "secondary.main",
+                        message.sender === "user" ? "#7645d9" : "#413060",
                       width: 32,
                       height: 32,
-                      mr: message.sender === "user" ? 0 : 1,
-                      ml: message.sender === "user" ? 1 : 0,
                     }}
                   >
                     {message.sender === "user" ? "U" : <BotIcon />}
                   </Avatar>
                   <Paper
                     elevation={1}
-                    sx={{
-                      p: 2,
-                      backgroundColor:
-                        message.sender === "user"
-                          ? "primary.main"
-                          : "background.paper",
-                      color:
-                        message.sender === "user" ? "white" : "text.primary",
-                      borderRadius: 2,
-                    }}
+                    className={`chat-bubble ${
+                      message.sender === "user" ? "user-bubble" : "bot-bubble"
+                    }`}
                   >
                     {message.sender === "bot" ? (
                       <div
@@ -267,7 +310,9 @@ const AIAssistant = () => {
                         dangerouslySetInnerHTML={renderMarkdown(message.text)}
                       />
                     ) : (
-                      <Typography>{message.text}</Typography>
+                      <Typography sx={{ color: "white" }}>
+                        {message.text}
+                      </Typography>
                     )}
                   </Paper>
                 </Box>
@@ -275,17 +320,9 @@ const AIAssistant = () => {
             ))}
             {isTyping && (
               <Box display="flex" justifyContent="flex-start" mb={2}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    backgroundColor: "background.paper",
-                    p: 2,
-                    borderRadius: 2,
-                  }}
-                >
-                  <CircularProgress size={20} sx={{ mr: 1 }} />
-                  <Typography variant="body2">AI is typing...</Typography>
+                <Box className="typing-indicator">
+                  <CircularProgress size={20} sx={{ color: "#b39ddb" }} />
+                  <Typography>AI is typing...</Typography>
                 </Box>
               </Box>
             )}
@@ -293,7 +330,7 @@ const AIAssistant = () => {
           </Paper>
         </DialogContent>
 
-        <DialogActions sx={{ p: 2 }}>
+        <DialogActions>
           <TextField
             fullWidth
             variant="outlined"
@@ -311,10 +348,10 @@ const AIAssistant = () => {
           />
           <Button
             variant="contained"
-            color="primary"
             onClick={handleSendMessage}
             disabled={!input.trim() || isTyping}
             endIcon={<SendIcon />}
+            className="send-button"
           >
             Send
           </Button>

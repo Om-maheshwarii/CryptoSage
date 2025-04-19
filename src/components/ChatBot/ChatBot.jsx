@@ -15,6 +15,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import SendIcon from "@mui/icons-material/Send";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SmartToyOutlinedIcon from "@mui/icons-material/SmartToyOutlined";
+import { getAIResponse } from "../../services/aiService";
 
 const MAX_MESSAGES = 50; // Limit message history
 
@@ -86,9 +87,26 @@ const ChatBot = () => {
       setInput("");
       setIsTyping(true);
 
-      // Simulate AI response after a short delay
-      setTimeout(() => {
-        try {
+      // Call the AI service
+      getAIResponse(input.trim())
+        .then((response) => {
+          setMessages((prevMessages) => {
+            const updated = [
+              ...prevMessages,
+              {
+                id: Date.now(),
+                text: response,
+                sender: "bot",
+              },
+            ].slice(-MAX_MESSAGES);
+            return updated;
+          });
+        })
+        .catch((err) => {
+          console.error("Error getting AI response:", err);
+          setError("Sorry, I couldn't process your request. Please try again.");
+
+          // Fallback to local response if API fails
           const botResponse = generateBotResponse(input.trim().toLowerCase());
           setMessages((prevMessages) => {
             const updated = [
@@ -101,13 +119,10 @@ const ChatBot = () => {
             ].slice(-MAX_MESSAGES);
             return updated;
           });
-        } catch (err) {
-          setError("Sorry, I couldn't process your request. Please try again.");
-          console.error("Error generating response:", err);
-        } finally {
+        })
+        .finally(() => {
           setIsTyping(false);
-        }
-      }, 1000);
+        });
     } catch (err) {
       setError("Something went wrong. Please try again.");
       console.error("Error sending message:", err);

@@ -16,6 +16,7 @@ import CoinPage from "./pages/Coin";
 import { Provider } from "react-redux";
 import store from "./Store.js";
 import ChatBot from "./components/ChatBot/ChatBot";
+import APITest from "./components/APITest";
 
 /**
  * App Component
@@ -39,6 +40,7 @@ const App = () => {
             <Route path="/compare" element={<ComparePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/coin/:id" element={<CoinPage />} />
+            <Route path="/api-test" element={<APITest />} />
           </Routes>
           {/* ChatBot component available throughout the application */}
           <ChatBot />

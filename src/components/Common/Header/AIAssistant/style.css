@@ -15,29 +15,43 @@
 
 /* Dialog customization */
 .MuiDialog-paper {
-  background-color: #261e35 !important;
+  background-color: #1a1426 !important;
   color: white !important;
+  border-radius: 12px !important;
 }
 
 /* Message bubbles */
-.user-message {
+.chat-bubble {
+  border-radius: 18px !important;
+  padding: 12px 16px !important;
+  max-width: 80% !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
+  margin-bottom: 12px !important;
+}
+
+.user-bubble {
   background-color: #7645d9 !important;
   color: white !important;
   border-radius: 18px 18px 0 18px !important;
-  padding: 12px 16px !important;
-  max-width: 80% !important;
   margin-left: auto !important;
 }
 
-.bot-message {
+.bot-bubble {
   background-color: #413060 !important;
   color: white !important;
   border-radius: 18px 18px 18px 0 !important;
-  padding: 12px 16px !important;
-  max-width: 80% !important;
 }
 
 /* Input field customization */
+.MuiOutlinedInput-root {
+  background-color: #261e35 !important;
+  border-radius: 8px !important;
+}
+
+.MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+  border-color: #413060 !important;
+}
+
 .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
   border-color: #7645d9 !important;
 }
@@ -46,7 +60,15 @@
   border-color: #7645d9 !important;
 }
 
+.MuiOutlinedInput-input {
+  color: white !important;
+}
+
 /* Button customization */
+.MuiIconButton-root {
+  color: #b39ddb !important;
+}
+
 .MuiIconButton-root:hover {
   background-color: rgba(118, 69, 217, 0.1) !important;
   color: #7645d9 !important;
@@ -70,9 +92,36 @@
   background: #7645d9;
 }
 
+/* Dialog content customization */
+.MuiDialogContent-root {
+  background-color: #1a1426 !important;
+  padding: 24px !important;
+}
+
+.MuiDialogActions-root {
+  background-color: #1a1426 !important;
+  border-top: 1px solid #413060 !important;
+  padding: 16px 24px !important;
+}
+
+.MuiDialogTitle-root {
+  background-color: #261e35 !important;
+  border-bottom: 1px solid #413060 !important;
+  padding: 16px 24px !important;
+}
+
+/* Message content styling */
+.message-content {
+  background-color: #413060;
+  padding: 16px;
+  border-radius: 12px;
+  color: white;
+  margin: 8px 0;
+}
+
 /* Markdown content styling */
 .markdown-content {
-  color: white;
+  color: white !important;
   font-family: "Roboto", sans-serif;
   line-height: 1.5;
 }
@@ -83,7 +132,7 @@
 .markdown-content h4,
 .markdown-content h5,
 .markdown-content h6 {
-  color: #7645d9;
+  color: #b39ddb !important;
   margin-top: 1em;
   margin-bottom: 0.5em;
   font-weight: 600;
@@ -103,16 +152,19 @@
 
 .markdown-content p {
   margin-bottom: 0.8em;
+  color: white !important;
 }
 
 .markdown-content ul,
 .markdown-content ol {
   margin-left: 1.5em;
   margin-bottom: 0.8em;
+  color: white !important;
 }
 
 .markdown-content li {
   margin-bottom: 0.3em;
+  color: white !important;
 }
 
 .markdown-content code {
@@ -120,6 +172,7 @@
   padding: 0.2em 0.4em;
   border-radius: 3px;
   font-family: monospace;
+  color: #b39ddb !important;
 }
 
 .markdown-content pre {
@@ -133,6 +186,7 @@
 .markdown-content pre code {
   background-color: transparent;
   padding: 0;
+  color: #b39ddb !important;
 }
 
 .markdown-content blockquote {
@@ -140,7 +194,7 @@
   padding-left: 1em;
   margin-left: 0;
   margin-bottom: 0.8em;
-  color: #b39ddb;
+  color: #b39ddb !important;
 }
 
 .markdown-content a {
@@ -153,12 +207,13 @@
 }
 
 .markdown-content strong {
-  color: #b39ddb;
+  color: #b39ddb !important;
   font-weight: 600;
 }
 
 .markdown-content em {
   font-style: italic;
+  color: white !important;
 }
 
 .markdown-content hr {
@@ -178,9 +233,54 @@
   border: 1px solid #413060;
   padding: 0.5em;
   text-align: left;
+  color: white !important;
 }
 
 .markdown-content th {
   background-color: #1a1426;
-  color: #7645d9;
+  color: #7645d9 !important;
+}
+
+/* Fix for message bubbles */
+.MuiPaper-root {
+  background-color: #413060 !important;
+  color: white !important;
+}
+
+/* Ensure text is visible in all message types */
+.MuiTypography-root {
+  color: white !important;
+}
+
+/* Send button customization */
+.send-button {
+  background-color: #7645d9 !important;
+  color: white !important;
+  border-radius: 8px !important;
+  padding: 8px 16px !important;
+  text-transform: none !important;
+}
+
+.send-button:hover {
+  background-color: #5e35b0 !important;
+}
+
+/* Typing indicator */
+.typing-indicator {
+  background-color: #413060 !important;
+  border-radius: 12px !important;
+  padding: 8px 16px !important;
+  color: white !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+/* Message container */
+.messages-container {
+  background-color: #1a1426 !important;
+  padding: 16px !important;
+  border-radius: 12px !important;
+  height: 60vh !important;
+  overflow-y: auto !important;
 }
