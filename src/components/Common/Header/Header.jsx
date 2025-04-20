@@ -5,9 +5,27 @@ import AnchorTemporaryDrawer from "./drawer";
 import LoginRoundedIcon from "@mui/icons-material/LoginRounded";
 import Button from "../Button/Button";
 import BasicSelect from "./Menu/Menu";
+import { useAuth0 } from "@auth0/auth0-react";
+
 import AIAssistant from "./AIAssistant/AIAssistant";
 
 const Header = () => {
+  const { isAuthenticated, logout, loginWithRedirect } = useAuth0();
+
+  const handleLogin = () => {
+    loginWithRedirect({
+      authorizationParams: {
+        prompt: "login",
+        screen_hint: "login",
+      },
+    });
+  };
+
+  const handleLogout = () => {
+    console.log("Logout button clicked");
+    logout({ returnTo: window.location.origin });
+  };
+
   return (
     <div className="navbar">
       <h1 className="logo">
@@ -32,9 +50,11 @@ const Header = () => {
         <Link to="/dashboard">
           <Button text={"Dashboard"} outlined={true} />
         </Link>
-        <Link to="/Login" className="login">
-          <Button text={"Login"} />
-        </Link>
+        {!isAuthenticated ? (
+          <Button text={"Login"} onClick={handleLogin} />
+        ) : (
+          <Button text={"Logout"} onClick={handleLogout} />
+        )}
       </div>
 
       <div className="mobile-drawer">
