@@ -11,7 +11,7 @@ import HomePage from "./pages/Home";
 import DashboardPage from "./pages/Dashboard";
 import WishlistPage from "./pages/WishlistPage";
 import ComparePage from "./pages/Compare";
-import LoginPage from "./pages/Login";
+// import LoginPage from "./pages/Login";
 import CoinPage from "./pages/Coin";
 import { Provider } from "react-redux";
 import store from "./Store.js";

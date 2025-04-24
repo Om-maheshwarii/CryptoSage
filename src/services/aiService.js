@@ -10,7 +10,7 @@ import { validateAPIConfig } from "../utils/apiUtils";
 
 // API Configuration
 const API_URL = "https://openrouter.ai/api/v1/chat/completions";
-const MODEL = "google/gemini-pro";
+const MODEL = "microsoft/mai-ds-r1:free";
 const MAX_TOKENS = 1000;
 
 // Get API key from environment variables

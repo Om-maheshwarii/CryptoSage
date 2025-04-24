@@ -44,6 +44,7 @@ const CoinPage = () => {
           // Format and set the coin data
           coinObject(setCoinData, response.data);
           setIsLoading(false);
+          // console.log(response.data);
         })
         .catch((error) => {
           setIsLoading(false);

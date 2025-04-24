@@ -1,0 +1,106 @@
+.profile-page {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.profile-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.profile-page-avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 4px solid var(--white);
+  margin-bottom: 1rem;
+}
+
+.profile-header h1 {
+  color: var(--white);
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.profile-header .email {
+  color: var(--grey);
+  font-size: 1.1rem;
+}
+
+.profile-content {
+  background-color: var(--black);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.profile-section {
+  margin-bottom: 2rem;
+}
+
+.profile-section h2 {
+  color: var(--white);
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--grey);
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.info-item .label {
+  color: var(--grey);
+  font-size: 0.9rem;
+}
+
+.info-item .value {
+  color: var(--white);
+  font-size: 1.1rem;
+}
+
+.recent-searches {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 1.5rem;
+  min-height: 200px;
+}
+
+.no-activity {
+  color: var(--grey);
+  text-align: center;
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .profile-page {
+    margin: 1rem auto;
+  }
+
+  .profile-page-avatar {
+    width: 120px;
+    height: 120px;
+  }
+
+  .profile-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .profile-content {
+    padding: 1.5rem;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+}

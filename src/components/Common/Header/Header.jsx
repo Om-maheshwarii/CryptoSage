@@ -2,15 +2,14 @@ import React from "react";
 import "../Header/style.css";
 import { Link } from "react-router-dom";
 import AnchorTemporaryDrawer from "./drawer";
-import LoginRoundedIcon from "@mui/icons-material/LoginRounded";
 import Button from "../Button/Button";
 import BasicSelect from "./Menu/Menu";
 import { useAuth0 } from "@auth0/auth0-react";
-
+import Profile from "../../Profile/Profile";
 import AIAssistant from "./AIAssistant/AIAssistant";
 
 const Header = () => {
-  const { isAuthenticated, logout, loginWithRedirect } = useAuth0();
+  const { isAuthenticated, loginWithRedirect } = useAuth0();
 
   const handleLogin = () => {
     loginWithRedirect({
@@ -19,11 +18,6 @@ const Header = () => {
         screen_hint: "login",
       },
     });
-  };
-
-  const handleLogout = () => {
-    console.log("Logout button clicked");
-    logout({ returnTo: window.location.origin });
   };
 
   return (
@@ -50,10 +44,12 @@ const Header = () => {
         <Link to="/dashboard">
           <Button text={"Dashboard"} outlined={true} />
         </Link>
-        {!isAuthenticated ? (
-          <Button text={"Login"} onClick={handleLogin} />
+        {isAuthenticated ? (
+          <Profile />
         ) : (
-          <Button text={"Logout"} onClick={handleLogout} />
+          <div className="login-button" onClick={handleLogin}>
+            <Button text={"Login"} />
+          </div>
         )}
       </div>
 

@@ -45,6 +45,11 @@ const COLORS = {
   },
 };
 
+// Rate limiting configuration
+const RATE_LIMIT_DELAY = 2000; // 2 seconds between requests
+const MAX_RETRIES = 3;
+const RETRY_DELAY = 2000; // 2 seconds between retries
+
 const ChartComponent = ({
   primaryId,
   secondaryId,
@@ -74,6 +79,23 @@ const ChartComponent = ({
     });
   }, [primaryId, secondaryId]);
 
+  // Helper function to fetch data with retry logic
+  const fetchWithRetry = useCallback(async (url, retryCount = 0) => {
+    try {
+      const response = await axios.get(url);
+      return response;
+    } catch (error) {
+      if (retryCount < MAX_RETRIES) {
+        console.log(
+          `Retrying fetch (attempt ${retryCount + 1}/${MAX_RETRIES})`
+        );
+        await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY));
+        return fetchWithRetry(url, retryCount + 1);
+      }
+      throw error;
+    }
+  }, []);
+
   // Fetch data whenever primaryId, secondaryId, days, or currency changes
   useEffect(() => {
     console.log("ChartComponent useEffect triggered");
@@ -90,39 +112,43 @@ const ChartComponent = ({
           currency,
         });
 
-        // Create both requests
-        const primaryRequest = axios.get(
+        // Fetch primary data first
+        const primaryResponse = await fetchWithRetry(
           HistoricalChart(primaryId, days, currency)
         );
-        const secondaryRequest = secondaryId
-          ? axios.get(HistoricalChart(secondaryId, days, currency))
-          : Promise.resolve({ data: { prices: [] } });
 
-        // Use Promise.all for parallel requests
-        const [primaryResponse, secondaryResponse] = await Promise.all([
-          primaryRequest,
-          secondaryRequest,
-        ]);
+        if (!isMounted) return;
 
-        if (isMounted) {
-          console.log("Chart data fetched successfully");
-
-          // Validate primary data
-          if (
-            !primaryResponse.data ||
-            !primaryResponse.data.prices ||
-            primaryResponse.data.prices.length === 0
-          ) {
-            console.error("Invalid primary data structure received");
-            setError(true);
-            return;
-          }
-
-          setChartData({
-            primary: primaryResponse.data.prices,
-            secondary: secondaryResponse.data.prices || null,
-          });
+        // Validate primary data
+        if (
+          !primaryResponse.data ||
+          !primaryResponse.data.prices ||
+          primaryResponse.data.prices.length === 0
+        ) {
+          console.error("Invalid primary data structure received");
+          setError(true);
+          return;
         }
+
+        // Add delay before fetching secondary data
+        await new Promise((resolve) => setTimeout(resolve, RATE_LIMIT_DELAY));
+
+        // Fetch secondary data if needed
+        let secondaryResponse = null;
+        if (secondaryId) {
+          secondaryResponse = await fetchWithRetry(
+            HistoricalChart(secondaryId, days, currency)
+          );
+        }
+
+        if (!isMounted) return;
+
+        console.log("Chart data fetched successfully");
+
+        setChartData({
+          primary: primaryResponse.data.prices,
+          secondary: secondaryResponse?.data?.prices || null,
+        });
       } catch (error) {
         console.error("Error fetching chart data:", error);
         if (isMounted) {
@@ -141,7 +167,7 @@ const ChartComponent = ({
     return () => {
       isMounted = false;
     };
-  }, [primaryId, secondaryId, days, currency]);
+  }, [primaryId, secondaryId, days, currency, fetchWithRetry]);
 
   // Format date/time for labels
   const formatTimeLabel = useCallback(
@@ -264,6 +290,17 @@ const ChartComponent = ({
             color: COLORS.PRIMARY.BORDER,
           },
         },
+        y1: {
+          type: "linear",
+          display: true,
+          position: "right",
+          ticks: {
+            color: COLORS.SECONDARY.TEXT,
+          },
+          grid: {
+            drawOnChartArea: false,
+          },
+        },
       },
       plugins: {
         legend: {
@@ -274,6 +311,11 @@ const ChartComponent = ({
         tooltip: {
           mode: "index",
           intersect: false,
+          backgroundColor: COLORS.BACKGROUND,
+          titleColor: COLORS.PRIMARY.TEXT,
+          bodyColor: COLORS.PRIMARY.TEXT,
+          borderColor: COLORS.PRIMARY.BORDER,
+          borderWidth: 1,
         },
       },
       elements: {
@@ -291,28 +333,8 @@ const ChartComponent = ({
       },
     };
 
-    // Add secondary y-axis only when needed
-    if (viewMode === "absolute" && chartData.secondary) {
-      baseOptions.scales.y1 = {
-        type: "linear",
-        display: true,
-        position: "right",
-        grid: {
-          drawOnChartArea: false,
-        },
-        ticks: {
-          color: COLORS.SECONDARY.TEXT,
-        },
-        title: {
-          display: true,
-          text: secondaryId,
-          color: COLORS.SECONDARY.BORDER,
-        },
-      };
-    }
-
     return baseOptions;
-  }, [viewMode, primaryId, secondaryId, chartData.secondary]);
+  }, [viewMode, primaryId, secondaryId]);
 
   // Render component
   return (
@@ -326,7 +348,7 @@ const ChartComponent = ({
           className="error-message"
           style={{ textAlign: "center", padding: "40px 0" }}
         >
-          <p>Error loading chart data. Please try again.</p>
+          <p>Failed to load chart data. Please try again later.</p>
         </div>
       ) : (
         <>
